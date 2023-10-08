@@ -58,6 +58,41 @@ func TestPop(t *testing.T) {
 	assert.Equal(t, LinkedList[int]{}, l, "Popped list does not join nil node")
 	v, err = l.Pop()
 	if assert.Error(t, err) {
-		assert.Equal(t, errors.New("LinkedList is empty"), err, "")
+		assert.Equal(t, errors.New("LinkedList is empty"), err, "LinkedList is not empty")
 	}
+}
+
+func TestIter(t *testing.T) {
+	val1, val2, val3 := 1, 2, 3
+	l_empty := LinkedList[int]{}
+	l := LinkedList[int]{
+		head: &node[int]{
+			value: val1, next: &node[int]{
+				value: val2, next: &node[int]{
+					value: val3,
+				},
+			},
+		},
+	}
+
+	i_nil, err := l_empty.Iter()
+	if assert.Error(t, err) {
+		assert.Equal(t, errors.New("LinkedList is empty"), err, "")
+		assert.Nil(t, i_nil, "Iter is not nil")
+	}
+
+	i, err := l.Iter()
+	if err != nil {
+		panic(err)
+	}
+
+	n1 := i()
+	n2 := i()
+	n3 := i()
+	assert.Equalf(t, val1, n1.value, "Value in first node is not equal to %v", val1)
+	assert.Equalf(t, val2, n2.value, "Value in second node is not equal to %v", val2)
+	assert.Equalf(t, val3, n3.value, "Value in third node is not equal to %v", val3)
+
+	n_nil := i()
+	assert.Nil(t, n_nil, "Iter does not return nil if list is empty")
 }

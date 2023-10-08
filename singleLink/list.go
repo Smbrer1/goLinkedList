@@ -33,15 +33,15 @@ func NewEmptyList[T any]() LinkedList[T] {
 	}
 }
 
-func (ll LinkedList[T]) iter() (func() node[T], error) {
+func (ll LinkedList[T]) Iter() (func() *node[T], error) {
 	if ll.head != nil {
 		n := ll.head
-		return func() node[T] {
+		return func() *node[T] {
 			t_node := n
-			if n.next != nil {
+			if n != nil {
 				n = n.next
 			}
-			return *t_node
+			return t_node
 		}, nil
 	}
 
